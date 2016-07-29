@@ -1,0 +1,45 @@
+version: "2"
+# A Docker Compose file for configuration of the development environment
+
+services:
+  # load balancer
+  lb:
+    image: frjaraur/simplest-demo:simplestlb
+    container_name: simplestlb # Do not allow scaling this service
+    restart: unless-stopped
+    networks:
+      simplest-demo:
+          aliases:
+          - simplestapp
+    ports:
+      - 8181:80
+
+  db:
+    image: frjaraur/simplest-demo:simplestdb
+    container_name: simplestdb # Don not allow scaling on this service yet ;)
+    restart: unless-stopped
+    environment:
+        - "POSTGRES_PASSWORD=changeme"
+    networks:
+       simplest-demo:
+        aliases:
+          - simplestdb
+    expose:
+      - 5432
+
+  app:
+    image: frjaraur/simplest-demo:simplestapp
+    restart: unless-stopped
+    networks:
+       simplest-demo:
+        aliases:
+          - simplestapp
+    expose:
+      - 3000
+    depends_on:
+      - lb
+      - db
+
+networks:
+  simplest-demo: {}
+
