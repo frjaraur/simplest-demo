@@ -2,7 +2,7 @@ FROM alpine
 RUN apk --update --no-progress add nodejs
 ENV APPDIR /APP
 
-WORKDIR ${APP}
+WORKDIR ${APPDIR}
 COPY simplestapp.js simplestapp.js
 COPY package.json package.json
 COPY dbconfig.json dbconfig.json
