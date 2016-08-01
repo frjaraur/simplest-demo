@@ -11,6 +11,8 @@
   "dependencies": {
     "my-local-ip": "^1.0.0",
     "pg": "latest",
-    "ipaddr.js": "latest"
+    "ipaddr.js": "latest",
+    "fs": "latest",
+    "chart.js": "latest"
   }
 }

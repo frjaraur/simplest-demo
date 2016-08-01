@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src='https://github.com/chartjs/Chart.js/releases/download/v2.2.1/Chart.js'></script>
+
+    <style>
+    </style>
+</head>
+<body>
+<H2>SERVERIP: {{SERVERIP}}</H2>
+<H2>SERVERNAME: {{SERVERNAME}}</H2>
+<H2>CLIENTIP: {{CLIENTIP}}</H2>
+    <canvas id="appChart" ></canvas>
+    <script>
+        var data = {
+            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            datasets: [
+                {
+                    label: "Requests",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
+                    pointStrokeColor: "#fff",
+                    pointHighlightFill: "#fff",
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    data: {{chartData}}
+                }
+            ]
+        };
+
+        var ctx = document.getElementById("appChart").getContext("2d");
+        ctx.canvas.width = 300;
+        ctx.canvas.height = 300;
+	      var myNewChart = new Chart(ctx , { type: "line", data: data, });
+
+    </script>
+</body>
+</html>
