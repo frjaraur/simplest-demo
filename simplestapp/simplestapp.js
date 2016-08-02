@@ -78,7 +78,7 @@ http.createServer(function (req, res) {
             qrows=qresult.rows
             qcount=Object.keys(qrows).length
             console.log(qcount);
-            if (qcount == 0){
+            if (qcount === 0){
               fs.readFile('simplestapp.html', 'utf-8', function (err, data) {
                 res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
                 var result = "";
