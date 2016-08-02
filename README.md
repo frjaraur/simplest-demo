@@ -10,3 +10,14 @@ docker run --net simplest-demo --name simplestapp -d -p 8080:3000 frjaraur/simpl
 
 
 docker-compose -f simplest-demo.yml -p simplest-demo up -d
+
+
+
+
+
+
+
+DEBUG:
+docker run -ti --net simplestdemo_simplest-demo -p 8080:3000 -v YOUR_PATH_FOR_simplest-demo/simplestapp/simplestapp.html:/APP/simplestapp.html -v YOUR_PATH_FOR_simplest-demo/simplestapp/simplestapp.js:/APP/simplestapp.js frjaraur/simplest-demo:simplestapp sh
+
+docker run -ti --net=simplestdemo_simplest-demo frjaraur/simplest-demo:simplestdb psql -h db -d demo -U demo
