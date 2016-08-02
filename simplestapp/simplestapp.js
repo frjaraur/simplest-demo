@@ -83,7 +83,7 @@ http.createServer(function (req, res) {
                 res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
                 var result = "";
                 //res.write('<p>appserverip: ' + serverip+' appservername: '+servername+' clientip: '+clientip+'</p>\n');
-                result= data.replace(new RegExp('{{chartData}}', 'g'), 1);
+                result= data.replace(new RegExp('{{chartData}}', 'g'), '1');
                 result= result.replace(new RegExp('{{chartLabels}}','g'), serverip);
                 result = result.replace('{{SERVERIP}}', serverip);
                 result = result.replace('{{SERVERNAME}}', servername);
