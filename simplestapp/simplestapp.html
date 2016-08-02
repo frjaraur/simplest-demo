@@ -6,16 +6,31 @@
     <script src='https://github.com/chartjs/Chart.js/releases/download/v2.2.1/Chart.js'></script>
 
     <style>
+
+        h2 {
+            color: grey;
+            text-align: left;
+            font-family: "Sans-serif", Arial;
+            font-style: oblique;
+            font-size: 14px;
+        }
+
+        a {
+            color: blue;
+        }
+
     </style>
 </head>
 <body>
 <H2>SERVERIP: {{SERVERIP}}</H2>
 <H2>SERVERNAME: {{SERVERNAME}}</H2>
 <H2>CLIENTIP: {{CLIENTIP}}</H2>
-    <canvas id="appChart" ></canvas>
+
+<table witdh="400">
+    <canvas id="appChart" style="display";block;></canvas>
     <script>
         var data = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: [{{chartLabels}}],
             datasets: [
                 {
                     label: "Requests",
@@ -25,16 +40,23 @@
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: {{chartData}}
+                    data: [{{chartData}}]
                 }
             ]
         };
-
+        var option = {
+            animation: {
+                duration:5000
+            },
+            responsive:false,
+            maintainAspectRatio: false
+        };
         var ctx = document.getElementById("appChart").getContext("2d");
-        ctx.canvas.width = 300;
+        ctx.canvas.width = 800;
         ctx.canvas.height = 300;
-	      var myNewChart = new Chart(ctx , { type: "line", data: data, });
+	      var myNewChart = new Chart(ctx , { type: "line", data: data, options:option,});
 
     </script>
+</table>
 </body>
 </html>

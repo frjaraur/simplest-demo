@@ -17,13 +17,7 @@ const conString = 'postgres://' + config.dbuser + ':' + config.dbpasswd + '@' + 
 
 http.createServer(function (req, res) {
   if (req.url == "/favicon.ico"){return;}
-  fs.readFile('simplestapp.html', 'utf-8', function (err, data) {
-    res.writeHead(200, { 'Content-Type': 'text/html' });
 
-    //res.writeHead(200, {'Content-Type': 'text/plain'});
-    //res.writeHead(200, {'Content-Type': 'text/html'});
-    //res.write('<html>\n');
-    //res.write('<body>\n');
 
     var clientip = req.connection.remoteAddress;
     var ipaddr = require('ipaddr.js');
@@ -41,33 +35,9 @@ http.createServer(function (req, res) {
       clientip="Unknown";
     }
 
-    var chartData = [];
-    for (var i = 0; i < 7; i++)
-        chartData.push(Math.random() * 50);
 
 
-
-
-    var result = data.replace('{{chartData}}', JSON.stringify(chartData));
-    result = result.replace('{{SERVERIP}}', serverip);
-    result = result.replace('{{SERVERNAME}}', servername);
-    result = result.replace('{{CLIENTIP}}', clientip);
-
-    console.log(JSON.stringify(chartData));
-    //console.log(data);
-
-    res.write(result);
-
-
-    //res.end('appserverip: ' + serverip+' appservername: '+hostname+' clientip: '+clientip+'\n');
-    res.write('<p>appserverip: ' + serverip+' appservername: '+servername+' clientip: '+clientip+'</p>\n');
-
-    res.write('</body>\n');
-    res.write('</html>\n');
-    res.end();
-
-
-
+    //res.write('<p>appserverip: ' + serverip+' appservername: '+servername+' clientip: '+clientip+'</p>\n');
     console.log("Request received from " + clientip);
 
     pg.connect(conString, function (err, client, done) {
@@ -75,7 +45,6 @@ http.createServer(function (req, res) {
       if (err) {
         return console.error('error fetching client from pool', err)
       }
-      //client.query('SELEC'INSERT INTO demo VALUES ('+appdate+',quote_literal('+serverip+'),quote_literal('+clientip+'),Now())';T * from demo', function (err, result) {
 
       var insert='INSERT INTO demo(serverip,clientip,date) VALUES (\''+serverip+'\',\''+clientip+'\',Now())';
 
@@ -90,10 +59,66 @@ http.createServer(function (req, res) {
 
             console.log(result.rows[0])
         })
+      client.end
+    });
+
+    pg.connect(conString, function (err, client, done) {
+
+
+        var select='select serverip, count (*) as hits from demo group by serverip';
+
+
+        console.log('SELECT: '+select);
+
+        var serverips="";
+        var serverhits="";
+        client.query(select, function (err, qresult,serverips,serverhits) {
+            console.log("KK "+ JSON.stringify(qresult.rows));
+            console.log("obj "+ typeof(qresult.rows));
+            qcount=qresult.rows
+            console.log(Object.keys(qcount).length);
+            for(var i = 0; i < 4; i++) {
+              console.log(qresult.rows[i].serverip);
+              serverips=serverips + "\"" + qresult.rows[i].serverip +"\","
+              console.log(qresult.rows[i].hits);
+              serverhits=serverhits+qresult.rows[i].hits+","
+            }
+            serverips=serverips.replace("undefined","");
+            serverips=serverips.replace(new RegExp(/,$/),"");
+
+            serverhits=serverhits.replace("undefined","");
+            serverhits=serverhits.replace(new RegExp(/,$/),"");
+
+            console.log(serverips);
+            console.log(serverhits);
+
+            fs.readFile('simplestapp.html', 'utf-8', function (err, data) {
+              res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
+              var result = "";
+              //res.write('<p>appserverip: ' + serverip+' appservername: '+servername+' clientip: '+clientip+'</p>\n');
+              result= data.replace(new RegExp('{{chartData}}', 'g'), serverhits);
+              result= result.replace(new RegExp('{{chartLabels}}','g'), serverips);
+              result = result.replace('{{SERVERIP}}', serverip);
+              result = result.replace('{{SERVERNAME}}', servername);
+              result = result.replace('{{CLIENTIP}}', clientip);
+
+              console.log(result);
+              res.write(result);
+
+              // Closing response
+              res.write('</body>\n');
+              res.write('</html>\n');
+              res.end();
+            });
+        })
+
         client.end
 
+
     })
-  });
+
+
+
 }).listen(port);
 
 
