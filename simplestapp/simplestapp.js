@@ -59,11 +59,6 @@ http.createServer(function (req, res) {
 
             //console.log(result.rows[0])
         })
-      client.end
-    });
-
-    pg.connect(conString, function (err, client, done) {
-
 
         var select='select serverip, count (*) as hits from demo group by serverip';
 
@@ -72,6 +67,7 @@ http.createServer(function (req, res) {
 
         var serverips="";
         var serverhits="";
+        
         client.query(select, function (err, qresult,serverips,serverhits) {
             console.log(">> "+ JSON.stringify(qresult.rows));
             //console.log("obj "+ typeof(qresult.rows));
