@@ -75,8 +75,31 @@ http.createServer(function (req, res) {
         client.query(select, function (err, qresult,serverips,serverhits) {
             console.log("KK "+ JSON.stringify(qresult.rows));
             console.log("obj "+ typeof(qresult.rows));
-            qcount=qresult.rows
-            console.log(Object.keys(qcount).length);
+            qrows=qresult.rows
+            qcount=Object.keys(qrows).length
+            console.log(qcount);
+            if (qcount == 0){
+              fs.readFile('simplestapp.html', 'utf-8', function (err, data) {
+                res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
+                var result = "";
+                //res.write('<p>appserverip: ' + serverip+' appservername: '+servername+' clientip: '+clientip+'</p>\n');
+                result= data.replace(new RegExp('{{chartData}}', 'g'), 1);
+                result= result.replace(new RegExp('{{chartLabels}}','g'), serverip);
+                result = result.replace('{{SERVERIP}}', serverip);
+                result = result.replace('{{SERVERNAME}}', servername);
+                result = result.replace('{{CLIENTIP}}', clientip);
+
+                console.log(result);
+                res.write(result);
+
+                // Closing response
+                res.write('</body>\n');
+                res.write('</html>\n');
+                res.end();
+              });
+              return;
+            }
+
             for(var i = 0; i < qcount ; i++) {
               console.log(qresult.rows[i].serverip);
               serverips=serverips + "\"" + qresult.rows[i].serverip +"\","
