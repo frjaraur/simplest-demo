@@ -85,7 +85,7 @@ http.createServer(function (req, res) {
                 serverip=serverip.replace("undefined","");
                 //res.write('<p>appserverip: ' + serverip+' appservername: '+servername+' clientip: '+clientip+'</p>\n');
                 result= data.replace(new RegExp('{{chartData}}', 'g'), '1');
-                result= result.replace(new RegExp('{{chartLabels}}','g'), serverip);
+                result= result.replace(new RegExp('{{chartLabels}}','g'), '"'+serverip+'"');
                 result = result.replace('{{SERVERIP}}', serverip);
                 result = result.replace('{{SERVERNAME}}', servername);
                 result = result.replace('{{CLIENTIP}}', clientip);
