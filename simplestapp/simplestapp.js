@@ -77,7 +77,7 @@ http.createServer(function (req, res) {
             console.log("obj "+ typeof(qresult.rows));
             qcount=qresult.rows
             console.log(Object.keys(qcount).length);
-            for(var i = 0; i < 4; i++) {
+            for(var i = 0; i < qcount ; i++) {
               console.log(qresult.rows[i].serverip);
               serverips=serverips + "\"" + qresult.rows[i].serverip +"\","
               console.log(qresult.rows[i].hits);
