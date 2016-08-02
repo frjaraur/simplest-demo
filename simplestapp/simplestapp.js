@@ -82,6 +82,7 @@ http.createServer(function (req, res) {
               fs.readFile('simplestapp.html', 'utf-8', function (err, data) {
                 res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
                 var result = "";
+                serverip=serverip.replace("undefined","");
                 //res.write('<p>appserverip: ' + serverip+' appservername: '+servername+' clientip: '+clientip+'</p>\n');
                 result= data.replace(new RegExp('{{chartData}}', 'g'), '1');
                 result= result.replace(new RegExp('{{chartLabels}}','g'), serverip);
