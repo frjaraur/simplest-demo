@@ -72,7 +72,7 @@ http.createServer(function (req, res) {
 
         var serverips="";
         var serverhits="";
-        client.query(select, function (err, qresult,serverips,serverhits) {
+        client.query(select, function (err, qresult,serverips,serverhits,serverip) {
             console.log("KK "+ JSON.stringify(qresult.rows));
             console.log("obj "+ typeof(qresult.rows));
             qrows=qresult.rows
