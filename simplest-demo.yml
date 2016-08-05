@@ -6,11 +6,14 @@ services:
   lb:
     image: frjaraur/simplest-demo:simplestlb
     container_name: simplestlb # Do not allow scaling this service
+    environment:
+      - APPLICATION_ALIAS=simplestapp
+      - APPLICATION_PORT=3000
     restart: unless-stopped
     networks:
-      simplest-demo:
+      simplestdemo:
           aliases:
-          - simplestapp
+          - simplestlb
     ports:
       - 8181:80
 
@@ -21,7 +24,7 @@ services:
     environment:
         - "POSTGRES_PASSWORD=changeme"
     networks:
-       simplest-demo:
+       simplestdemo:
         aliases:
           - simplestdb
     expose:
@@ -29,9 +32,14 @@ services:
 
   app:
     image: frjaraur/simplest-demo:simplestapp
+    environment:
+      - dbhost=simplestdb
+      - dbname=demo
+      - dbuser=demo
+      - dbpasswd=d3m0
     restart: unless-stopped
     networks:
-       simplest-demo:
+       simplestdemo:
         aliases:
           - simplestapp
     expose:
@@ -41,5 +49,4 @@ services:
       - db
 
 networks:
-  simplest-demo: {}
-
+  simplestdemo:

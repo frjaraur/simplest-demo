@@ -10,10 +10,17 @@ var appdate=+new Date();
 
 var config = require('./dbconfig.json');
 
-console.log(config.dbuser + ' ' + config.dbpasswd);
-console.log(config.dbhost + ' ' + config.dbname);
+var dbuser = process.env.dbuser || config.dbuser;
+var dbpasswd = process.env.dbpasswd || config.dbpasswd;
+var dbhost = process.env.dbhost || config.dbhost;
+var dbname = process.env.dbname || config.dbname;
+var dbport = process.env.dbport || config.dbport || 5432;
 
-const conString = 'postgres://' + config.dbuser + ':' + config.dbpasswd + '@' + config.dbhost + '/' + config.dbname;
+console.log('dbuser: '+dbuser + ' dbpasswd: ' + dbpasswd);
+console.log('dbhost: '+dbhost + ' dbname: ' + dbname + ' dbport: ' + dbport);
+console.log("Can use environment variables to avoid '/APP/dbconfig.js' file configurations.");
+
+const conString = 'postgres://' + dbuser + ':' + dbpasswd + '@' + dbhost + ':'+ dbport + '/' + dbname;
 
 http.createServer(function (req, res) {
   if (req.url == "/favicon.ico"){return;}
@@ -67,7 +74,7 @@ http.createServer(function (req, res) {
 
         var serverips="";
         var serverhits="";
-        
+
         client.query(select, function (err, qresult,serverips,serverhits) {
             console.log(">> "+ JSON.stringify(qresult.rows));
             //console.log("obj "+ typeof(qresult.rows));

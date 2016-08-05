@@ -1,5 +1,5 @@
 FROM alpine
-RUN apk --update --no-progress add nodejs
+RUN apk --update --update --no-progress --no-cache  add nodejs
 ENV APPDIR /APP
 
 WORKDIR ${APPDIR}
