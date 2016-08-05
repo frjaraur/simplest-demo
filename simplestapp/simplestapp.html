@@ -31,28 +31,40 @@
             labels: [{{chartLabels}}],
             datasets: [
                 {
-                    label: "Requests",
+                    label: "Requests per Backend Server IP",
                     fillColor: "rgba(220,220,220,0.2)",
                     strokeColor: "rgba(220,220,220,1)",
+                    pointRadius: 3,
                     pointColor: "rgba(220,220,220,1)",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [{{chartData}}]
+                    data: [{{chartData}}],
                 }
             ]
         };
-        var option = {
+        var options = {
             animation: {
                 duration:5000
             },
             responsive:false,
-            maintainAspectRatio: false
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [{
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Hits'
+                  },
+                  ticks: {
+                      min: 0,
+                  }
+                }]
+            }
         };
         var ctx = document.getElementById("appChart").getContext("2d");
         ctx.canvas.width = 800;
         ctx.canvas.height = 300;
-	      var myNewChart = new Chart(ctx , { type: "line", data: data, options:option,});
+	      var myNewChart = new Chart(ctx , { type: "line", data: data, options: options,});
 
     </script>
 </body>
