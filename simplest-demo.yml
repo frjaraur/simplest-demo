@@ -15,7 +15,7 @@ services:
           aliases:
           - simplestlb
     ports:
-      - 8181:80
+      - 8080:80
 
   db:
     image: frjaraur/simplest-demo:simplestdb
