@@ -54,7 +54,7 @@ http.createServer(function (req, res) {
         return console.error('error fetching client from pool', err)
       }
 
-      var insert='INSERT INTO demo(serverip,clientip,date) VALUES (\''+serverip+'\',\''+clientip+'\',Now())';
+      var insert='INSERT INTO hits(serverip,clientip,date) VALUES (\''+serverip+'\',\''+clientip+'\',Now())';
 
       console.log(insert);
 
@@ -68,7 +68,7 @@ http.createServer(function (req, res) {
             //console.log(result.rows[0])
         })
 
-        var select='select serverip, count (*) as hits from demo group by serverip';
+        var select='select serverip, count (*) as hits from hits group by serverip';
 
 
         console.log('SELECT: '+select);
