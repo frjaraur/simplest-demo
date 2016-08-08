@@ -136,6 +136,8 @@ http.createServer(function (req, res) {
               var status="ERROR"
               for(var i = 0; i < Object.keys(qresult.rows).length ; i++) {
                 if (qresult.rows[i].status == 2){status="OK";}
+                onsole.log(qresult.rows[i].hostname+":"+qresult.rows[i].port+" - "+status+" - "+qresult.rows[i].role);
+
                 dbpoolserver=dbpoolserver+"<p><H3>"+qresult.rows[i].hostname+":"+qresult.rows[i].port+" - "+status+" - "+qresult.rows[i].role+"<H3>";
               }
                 dbpool=dbpoolserver;
