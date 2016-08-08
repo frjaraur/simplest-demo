@@ -103,11 +103,12 @@ http.createServer(function (req, res) {
               });
               return;
             }
-
+            totalhits=0;
             for(var i = 0; i < qcount ; i++) {
               //console.log(qresult.rows[i].serverip);
               serverips=serverips + "\"" + qresult.rows[i].serverip +"\","
               //console.log(qresult.rows[i].hits);
+              totalhits=parseInt(qresult.rows[i].hits)+totalhits;
               serverhits=serverhits+qresult.rows[i].hits+","
             }
             serverips=serverips.replace("undefined","");
@@ -128,6 +129,9 @@ http.createServer(function (req, res) {
               result = result.replace('{{SERVERIP}}', serverip);
               result = result.replace('{{SERVERNAME}}', servername);
               result = result.replace('{{CLIENTIP}}', clientip);
+              result = result.replace('{{APPSERVERS}}', qcount);
+              result = result.replace('{{TOTALHITS}}', totalhits);
+
 
               console.log(result);
               res.write(result);
