@@ -15,6 +15,7 @@ var dbpasswd = process.env.dbpasswd || config.dbpasswd;
 var dbhost = process.env.dbhost || config.dbhost;
 var dbname = process.env.dbname || config.dbname;
 var dbport = process.env.dbport || config.dbport || 5432;
+var dbpool = process.env.dbpool || config.dbpool || false;
 
 console.log('dbuser: '+dbuser + ' dbpasswd: ' + dbpasswd);
 console.log('dbhost: '+dbhost + ' dbname: ' + dbname + ' dbport: ' + dbport);
@@ -120,6 +121,27 @@ http.createServer(function (req, res) {
             console.log(serverips);
             console.log(serverhits);
 
+
+            var pgpoolq='show pool_nodes;';
+
+            console.log(pgpoolq);
+
+            client.query(pgpoolq, function (err, qresult) {
+              console.log(">> "+ JSON.stringify(qresult.rows));
+              if (err) {
+                return console.error('error happened during query', err)
+              }
+              console.log(qresult.rows[0])
+              var dbpoolserver=""
+              var status="ERROR"
+              for(var i = 0; i < Object.keys(qresult.rows).length ; i++) {
+                if (qresult.rows[i].status == 2){status="OK";}
+                dbpoolserver=dbpoolserver+"<p><H3>"+qresult.rows[i].hostname+":"+qresult.rows[i].port+" - "+status+" - "+qresult.rows[i].role+"<H3>";
+              }
+                dbpool=dbpoolserver;
+            })
+
+
             fs.readFile('simplestapp.html', 'utf-8', function (err, data) {
               res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
               var result = "";
@@ -131,6 +153,8 @@ http.createServer(function (req, res) {
               result = result.replace('{{CLIENTIP}}', clientip);
               result = result.replace('{{APPSERVERS}}', qcount);
               result = result.replace('{{TOTALHITS}}', totalhits);
+              result = result.replace('{{DBPOOL}}', dbpool);
+
 
 
               console.log(result);

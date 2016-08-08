@@ -22,8 +22,12 @@ hits:
 	while :;do curl -s http://0.0.0.0:8080 >/dev/null;sleep 2;done
 
 editnode:
-	docker network create testing || echo
-	docker rm -fv simplestdb simplestapp || echo
-	docker run --net=testing -e "POSTGRES_PASSWORD=changeme" -d --name simplestdb frjaraur/simplest-demo:simplestdb
-	docker run --rm --name simplestapp --net=testing -ti -v ${PWD}/simplestapp/simplestapp.js:/APP/simplestapp.js \
+	docker network create db || echo
+
+	#docker rm -fv simplestdb simplestapp || echo
+	#docker run --net=db -e "POSTGRES_PASSWORD=changeme" -d --name simplestdb frjaraur/simplest-demo:simplestdb
+
+	docker run --rm --name simplestapp --net=db -ti \
+	-e dbhost=pgpool -e dbname=demo -e dbuser=demo -e dbpasswd=demo -e dbpool=true \
+	-v ${PWD}/simplestapp/simplestapp.js:/APP/simplestapp.js \
 	-v ${PWD}/simplestapp/simplestapp.html:/APP/simplestapp.html -p 8080:3000 frjaraur/simplest-demo:simplestapp sh
