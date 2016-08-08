@@ -14,12 +14,12 @@
             font-style: oblique;
             font-size: 14px;
         }
-        h3 {
+        li {
             color: grey;
             text-align: left;
             font-family: "Sans-serif", Arial;
             font-style: oblique;
-            font-size: 12px;
+            font-size: 10px;
         }
         a {
             color: blue;
@@ -33,7 +33,10 @@
 <H2>Load Balancer IP: {{CLIENTIP}}</H2>
 <H2>Active Applicacion Servers: {{APPSERVERS}}</H2>
 <H2>Total Requests: {{TOTALHITS}}</H2>
-<H2>Database Pool: {{DBPOOL}}</H2>
+<H2>Database Pool:<H2>
+  <ul>
+  {{DBPOOL}}
+</ul>
 
 
     <canvas id="appChart" style="display";block;></canvas>
