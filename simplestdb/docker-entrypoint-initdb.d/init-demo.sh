@@ -7,7 +7,7 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
     GRANT ALL PRIVILEGES ON DATABASE demo TO demo;
     \connect demo;
 
-    CREATE TABLE IF NOT EXISTS demo
+    CREATE TABLE IF NOT EXISTS hits
     (
       hitid serial,
       serverip varchar(15) NOT NULL,
@@ -15,5 +15,5 @@ psql -v ON_ERROR_STOP=1 --username "$POSTGRES_USER" <<-EOSQL
       date timestamp without time zone,
       PRIMARY KEY (hitid)
     );
-    ALTER TABLE demo OWNER TO demo;
+    ALTER TABLE hits OWNER TO demo;
 EOSQL
